@@ -20,11 +20,11 @@ def hash_password(password):
 def init_database():
     """Initialize database if empty"""
 
-    # Initialize activities if empty
-    if activities_collection.count_documents({}) == 0:
-        for name, details in initial_activities.items():
+    # Insert any activity that is not in the database yet
+    for name, details in initial_activities.items():
+        if activities_collection.count_documents({"_id": name}) == 0:
             activities_collection.insert_one({"_id": name, **details})
-            
+
     # Initialize teacher accounts if empty
     if teachers_collection.count_documents({}) == 0:
         for teacher in initial_teachers:
